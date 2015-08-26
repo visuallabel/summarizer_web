@@ -1,0 +1,16 @@
+Rename the build.properties.orig to build.properties. Modify build.properties to match your installation details. All required .jar files
+are in the lib directory.
+
+Importing the source code as existing ant project to eclipse will probably not
+work. It is better to create a new java project and select the project directory
+to be the source code location (summarizer_web), and set the required build path
+variables manually.
+
+Installation to server:
+- Any relatively new Apache Tomcat (tested on Tomcat 7, other servlet containers may also work) should work.
+- For tomcat, the administration user (in tomcat-user.xml) requires the permission: manager-script when deployment using Ant is used. 
+- Java 7 is required (tested on Oracle's implementation, but might work with e.g. OpenJDK7).
+- The ant build script should create a working .war file automatically, which can be deployed to the servler container.
+- You must manually create the summarizer output directory as set in the summarizer.properties file 
+ (in classes directory of sources or in WEB_INF of deployed webapp), this is used for storing temporary data, so it must also
+ have the required write/read permissions.

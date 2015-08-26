@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2014 Tampere University of Technology, Pori Unit
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+  http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>MEAD Web</display-name>
+	<description>The MEAD REST Interface</description>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/error.jsp</location>
+	</error-page>
+
+	<!-- add task method -->
+	<servlet>
+		<servlet-name>addTask</servlet-name>
+		<jsp-file>/addTask.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>addTask</servlet-name>
+		<url-pattern>/addTask</url-pattern>
+	</servlet-mapping>
+	
+	<!-- get tags debug method -->
+	<servlet>
+		<servlet-name>getTags</servlet-name>
+		<jsp-file>/getTags.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getTags</servlet-name>
+		<url-pattern>/getTags</url-pattern>
+	</servlet-mapping>
+	
+	<!-- twitter url resolver/redirect -->
+	<servlet>
+        <servlet-name>twitterRedirect</servlet-name>
+        <servlet-class>otula.summarizerweb.debug.TwitterRedirectServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+        <servlet-name>twitterRedirect</servlet-name>
+        <url-pattern>/twitterRedirect</url-pattern>
+	</servlet-mapping>
+	
+	<listener>
+    	<listener-class>otula.summarizerweb.ServiceInitializer</listener-class>
+    </listener>
+    
+    <context-param>
+    	<param-name>propertyfile</param-name>
+    	<param-value>summarizer.properties</param-value>
+	</context-param>
+	
+	<jsp-config>
+  		<jsp-property-group>
+    		<url-pattern>*.jsp</url-pattern>
+    		<trim-directive-whitespaces>true</trim-directive-whitespaces>
+  		</jsp-property-group>
+	</jsp-config>
+</web-app>

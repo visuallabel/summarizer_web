@@ -1,0 +1,8 @@
+     -d docs 
+     -use 
+     -splitindex
+     -windowtitle 'MEAD Web API Specification'
+     -doctitle 'MEAD Web API Specification'
+     -header 'MEADWeb'
+	 -linksource
+     -sourcepath src
