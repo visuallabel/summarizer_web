@@ -1,8 +1,8 @@
      -d docs 
      -use 
      -splitindex
-     -windowtitle 'MEAD Web API Specification'
-     -doctitle 'MEAD Web API Specification'
-     -header 'MEADWeb'
+     -windowtitle 'SummarizerWeb API Specification'
+     -doctitle 'SummarizerWeb API Specification'
+     -header 'SummarizerWeb'
 	 -linksource
      -sourcepath src
