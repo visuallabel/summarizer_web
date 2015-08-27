@@ -25,12 +25,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -50,7 +50,6 @@ import analyzer.segmentation.Centroid;
  */
 public class FacebookSummarizationTask extends AbstractTask{
 	private static final Logger LOGGER = Logger.getLogger(FacebookSummarizationTask.class);
-	private static final int HTTP_RETRY_COUNT = 3;
 	private String _backendId = null;
 	private String _userId = null;
 	private Document _profile = null;
@@ -230,29 +229,27 @@ public class FacebookSummarizationTask extends AbstractTask{
 		String uri = getCallbackURI();
 		String taskId = getTaskId();
 		LOGGER.debug("Sending tags to "+uri+", tagCount: "+tagCount+", photoCount: "+photoCount+", task id: "+taskId);
-		try {	// post results to front-end
-			TaskResults task = new TaskResults(taskId, getTaskType(), _backendId);
-			task.setTags(results.getObjects());
-			task.setMedia(results.getPhotos());
-			task.setStatus(status);
+		
+		TaskResults task = new TaskResults(taskId, getTaskType(), _backendId);
+		task.setTags(results.getObjects());
+		task.setMedia(results.getPhotos());
+		task.setStatus(status);
 
-			HttpPost post = new HttpPost(uri);
-			post.setEntity(new StringEntity((new XMLFormatter()).toString(task), Definitions.CHARSET_UTF8));
-			post.setHeader("Content-Type", "text/xml; charset=utf-8");
-
-			DefaultHttpClient client = new DefaultHttpClient();
-			client.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(HTTP_RETRY_COUNT, false));
-
+		HttpPost post = new HttpPost(uri);
+		post.setEntity(new StringEntity((new XMLFormatter()).toString(task), Definitions.CHARSET_UTF8));
+		post.setHeader("Content-Type", "text/xml; charset=utf-8");
+		
+		try(CloseableHttpClient client = HttpClients.createDefault()) {	// post results to front-end
 			LOGGER.debug("Calling "+uri);
-			HttpResponse response = client.execute(post);
-			StatusLine sl = response.getStatusLine();
-			int statusCode = sl.getStatusCode();
-			if(statusCode < 200 || statusCode >= 300){
-				LOGGER.error("Server responded: "+statusCode+", "+sl.getReasonPhrase());
-			}else{
-				LOGGER.debug("Results submitted successfully.");
+			try(CloseableHttpResponse response = client.execute(post)){
+				StatusLine sl = response.getStatusLine();
+				int statusCode = sl.getStatusCode();
+				if(statusCode < 200 || statusCode >= 300){
+					LOGGER.error("Server responded: "+statusCode+", "+sl.getReasonPhrase());
+				}else{
+					LOGGER.debug("Results submitted successfully.");
+				}
 			}
-
 		} catch (IOException ex) {	// we could re-try later, but for now, let's just ignore failed attempts.
 			LOGGER.error(ex, ex);
 		}
