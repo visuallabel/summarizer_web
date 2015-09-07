@@ -167,7 +167,7 @@ public class FacebookSummarizationTask extends AbstractTask{
 	 * @return list of visual objects extracted from a file located in the input path or null if none was extracted
 	 */
 	protected AnalysisResults analyze(String inputPath){
-		List<VisualObject> tags = new ArrayList<>();
+		List<MediaObject> tags = new ArrayList<>();
 		List<Media> photos = new ArrayList<>();
 		TextAnalyzer ta = new TextAnalyzer();
 		String configurationFile = ServiceInitializer.getServiceInfo().getFacebookConfigurationFilePath();
@@ -177,7 +177,7 @@ public class FacebookSummarizationTask extends AbstractTask{
 		List<Centroid> centroids = out.getSingleOutput();
 		LOGGER.debug("Centroid count for task id "+getTaskId()+": "+centroids.size());
 		for(Centroid c : centroids){
-			VisualObject vo = new VisualObject(_backendId, c.getTfidf(), c.getUniqueID(), _userId, c.getTag());
+			MediaObject vo = new MediaObject(_backendId, c.getTfidf(), c.getUniqueID(), _userId, c.getTag());
 			String photoGUID = c.getPhotoUID();
 			if(StringUtils.isBlank(photoGUID)){
 				tags.add(vo);
@@ -236,6 +236,7 @@ public class FacebookSummarizationTask extends AbstractTask{
 		task.setStatus(status);
 
 		HttpPost post = new HttpPost(uri);
+		LOGGER.debug((new XMLFormatter()).toString(task));//TODO remove
 		post.setEntity(new StringEntity((new XMLFormatter()).toString(task), Definitions.CHARSET_UTF8));
 		post.setHeader("Content-Type", "text/xml; charset=utf-8");
 		
@@ -336,14 +337,14 @@ public class FacebookSummarizationTask extends AbstractTask{
 	 */
 	public static class AnalysisResults{
 		private List<Media> _photos = null;
-		private List<VisualObject> _objects = null;
+		private List<MediaObject> _objects = null;
 		
 		/**
 		 * 
 		 * @param objects
 		 * @param photos
 		 */
-		public AnalysisResults(List<VisualObject> objects, List<Media> photos){
+		public AnalysisResults(List<MediaObject> objects, List<Media> photos){
 			_objects = objects;
 			_photos = photos;
 		}
@@ -358,7 +359,7 @@ public class FacebookSummarizationTask extends AbstractTask{
 		/**
 		 * @return the objects
 		 */
-		public List<VisualObject> getObjects() {
+		public List<MediaObject> getObjects() {
 			return _objects;
 		}
 		

@@ -29,10 +29,10 @@ import org.apache.log4j.Logger;
 /**
  * Minimal implementation of VisualObject for Summarizer
  */
-@XmlRootElement(name=Definitions.ELEMENT_VISUAL_OBJECT)
+@XmlRootElement(name=Definitions.ELEMENT_MEDIA_OBJECT)
 @XmlAccessorType(XmlAccessType.NONE)
-public class VisualObject {
-	private static final Logger LOGGER = Logger.getLogger(VisualObject.class);
+public class MediaObject {
+	private static final Logger LOGGER = Logger.getLogger(MediaObject.class);
 	private static final Integer DEFAULT_RANK = 0;
 	@XmlElement(name = Definitions.ELEMENT_BACKEND_ID)
 	private String _backendId = null;
@@ -44,13 +44,13 @@ public class VisualObject {
 	private Integer _rank = DEFAULT_RANK;
 	@XmlElement(name = Definitions.ELEMENT_STATUS)
 	private ConfirmationStatus _status = ConfirmationStatus.CANDIDATE;
-	@XmlElement(name = Definitions.ELEMENT_VISUAL_OBJECT_TYPE)
+	@XmlElement(name = Definitions.ELEMENT_MEDIA_OBJECT_TYPE)
 	private VisualObjectType _type = VisualObjectType.KEYWORD;
 	@XmlElement(name = Definitions.ELEMENT_USER_ID)
 	private String _userId = null;
 	@XmlElement(name = Definitions.ELEMENT_VALUE)
 	private String _value = null;
-	@XmlElement(name = Definitions.ELEMENT_VISUAL_OBJECT_ID)
+	@XmlElement(name = Definitions.ELEMENT_MEDIA_OBJECT_ID)
 	private String _visualObjectId = null;
 
 	/**
@@ -81,7 +81,7 @@ public class VisualObject {
 	/**
 	 * for serialization
 	 */
-	public VisualObject(){
+	public MediaObject(){
 		// nothing needed
 	}
 	
@@ -93,7 +93,7 @@ public class VisualObject {
 	 * @param userId
 	 * @param value
 	 */
-	public VisualObject(String backendId, Double confidence, String objectId, String userId, String value){
+	public MediaObject(String backendId, Double confidence, String objectId, String userId, String value){
 		_backendId = backendId;
 		_confidence = confidence;
 		_objectId = objectId;
@@ -241,7 +241,7 @@ public class VisualObject {
 	 * for sub-classing, use the static
 	 * 
 	 * @return true if userId, objectId, value and rank are given
-	 * @see #isValid(VisualObject)
+	 * @see #isValid(MediaObject)
 	 */
 	protected boolean isValid(){
 		if(StringUtils.isBlank(_userId) || StringUtils.isBlank(_objectId) || StringUtils.isBlank(_value) || _rank == null){
@@ -256,7 +256,7 @@ public class VisualObject {
 	 * @param visualObject can be null
 	 * @return true if the passed object is valid
 	 */
-	public static boolean isValid(VisualObject visualObject){
+	public static boolean isValid(MediaObject visualObject){
 		return (visualObject == null ? false : visualObject.isValid());
 	}
 	
@@ -265,12 +265,12 @@ public class VisualObject {
 	 * @param objects can be null
 	 * @return true if the passed list of objects is valid
 	 */
-	public static boolean isValid(Collection<VisualObject> objects){
+	public static boolean isValid(Collection<MediaObject> objects){
 		if(objects == null || objects.isEmpty()){
 			LOGGER.warn("Empty visual object collection.");
 			return false;
 		}else{
-			for(VisualObject o : objects){
+			for(MediaObject o : objects){
 				if(!o.isValid()){
 					return false;
 				}

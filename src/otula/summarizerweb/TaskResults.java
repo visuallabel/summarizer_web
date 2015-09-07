@@ -48,9 +48,9 @@ public class TaskResults {
 	private String _backendId = null;
 	@XmlElement(name=Definitions.ELEMENT_STATUS)
 	private TaskStatus _status = null;
-	@XmlElementWrapper(name=Definitions.ELEMENT_VISUAL_OBJECTLIST)
-	@XmlElement(name=Definitions.ELEMENT_VISUAL_OBJECT)
-	private List<VisualObject> _tags = null;
+	@XmlElementWrapper(name=Definitions.ELEMENT_MEDIA_OBJECTLIST)
+	@XmlElement(name=Definitions.ELEMENT_MEDIA_OBJECT)
+	private List<MediaObject> _tags = null;
 	@XmlElementWrapper(name=Definitions.ELEMENT_MEDIALIST)
 	@XmlElement(name=Definitions.ELEMENT_MEDIA)
 	private List<Media> _media = null;
@@ -154,7 +154,7 @@ public class TaskResults {
 	 * 
 	 * @return list of tags
 	 */
-	public List<VisualObject> getTags() {
+	public List<MediaObject> getTags() {
 		return _tags;
 	}
 
@@ -162,7 +162,7 @@ public class TaskResults {
 	 * 
 	 * @param tags
 	 */
-	public void setTags(List<VisualObject> tags) {
+	public void setTags(List<MediaObject> tags) {
 		_tags = tags;
 	}
 
@@ -184,7 +184,7 @@ public class TaskResults {
 	 * 
 	 * @param tag
 	 */
-	public void addTag(VisualObject tag){
+	public void addTag(MediaObject tag){
 		if(_tags == null){
 			_tags = new ArrayList<>();
 		}
@@ -196,7 +196,7 @@ public class TaskResults {
 	 * @param mediaGUID
 	 * @param tag
 	 */
-	public void addTag(String mediaGUID, VisualObject tag){
+	public void addTag(String mediaGUID, MediaObject tag){
 		if(mediaGUID == null || mediaGUID.isEmpty()){
 			LOGGER.warn("Invalid guid.");
 			return;

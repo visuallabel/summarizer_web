@@ -32,7 +32,7 @@ import otula.utils.XMLFormatter;
  */
 public class FeedbackTask extends AbstractTask{
 	private static final Logger LOGGER = Logger.getLogger(FeedbackTask.class);
-	private List<VisualObject> _tags = null;
+	private List<MediaObject> _tags = null;
 
 	/**
 	 * 
@@ -47,7 +47,7 @@ public class FeedbackTask extends AbstractTask{
 	public void run() {
 		LOGGER.debug("Executing feedback task.");
 		TextAnalyzer textAnalyzer = new TextAnalyzer();
-		for(VisualObject object : _tags){
+		for(MediaObject object : _tags){
 			textAnalyzer.addFeedback(object.getValue(), object.getRank(), object.getUserId());
 		}
 		LOGGER.debug("Feedback updated.");
@@ -60,7 +60,7 @@ public class FeedbackTask extends AbstractTask{
 	 * @param tags
 	 * @return task or null on failure (bad tag list)
 	 */
-	public static FeedbackTask getTask(String taskId, String callbackUri, List<VisualObject> tags){
+	public static FeedbackTask getTask(String taskId, String callbackUri, List<MediaObject> tags){
 		if(tags == null || tags.isEmpty()){
 			LOGGER.warn("Invalid tag list.");
 			return null;
@@ -75,18 +75,18 @@ public class FeedbackTask extends AbstractTask{
 	 * @param taskDoc
 	 * @return tag list extracted from the given document or null if none was extracted
 	 */
-	public static List<VisualObject> extractTagList(Document taskDoc) {
-		NodeList nodes = taskDoc.getElementsByTagName(Definitions.ELEMENT_VISUAL_OBJECT);
+	public static List<MediaObject> extractTagList(Document taskDoc) {
+		NodeList nodes = taskDoc.getElementsByTagName(Definitions.ELEMENT_MEDIA_OBJECT);
 		int nodeCount = nodes.getLength();
 		if(nodeCount < 1){
-			LOGGER.error("No "+Definitions.ELEMENT_VISUAL_OBJECT+" provided.");
+			LOGGER.error("No "+Definitions.ELEMENT_MEDIA_OBJECT+" provided.");
 			return null;
 		}
 		
-		List<VisualObject> tags = new ArrayList<>(nodes.getLength());
+		List<MediaObject> tags = new ArrayList<>(nodes.getLength());
 		XMLFormatter formatter = new XMLFormatter();
 		for(int i=0;i<nodeCount;++i){
-			tags.add(formatter.toObject(nodes.item(i), VisualObject.class));
+			tags.add(formatter.toObject(nodes.item(i), MediaObject.class));
 		}
 
 		return tags;

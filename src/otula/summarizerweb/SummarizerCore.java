@@ -114,9 +114,9 @@ public final class SummarizerCore {
 				break;
 			}
 			case FACEBOOK_PROFILE_SUMMARIZATION_FEEDBACK:{
-				List<VisualObject> tagList = FeedbackTask.extractTagList(taskDoc);
-				if(!VisualObject.isValid(tagList)){
-					LOGGER.error("Bad or missing "+Definitions.ELEMENT_VISUAL_OBJECTLIST+".");
+				List<MediaObject> tagList = FeedbackTask.extractTagList(taskDoc);
+				if(!MediaObject.isValid(tagList)){
+					LOGGER.error("Bad or missing "+Definitions.ELEMENT_MEDIA_OBJECTLIST+".");
 					return null;
 				}
 				task = FeedbackTask.getTask(taskId, callbackUri, tagList);

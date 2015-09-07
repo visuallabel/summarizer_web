@@ -39,6 +39,14 @@ public final class Definitions {
 	/** xml element declaration */
 	public static final String ELEMENT_MEDIALIST = "mediaList";
 	/** xml element declaration */
+	public static final String ELEMENT_MEDIA_OBJECT = "object";
+	/** xml element declaration */
+	public static final String ELEMENT_MEDIA_OBJECT_ID = "mediaObjectId";
+	/** xml element declaration */
+	public static final String ELEMENT_MEDIA_OBJECT_TYPE = "objectType";
+	/** xml element declaration */
+	public static final String ELEMENT_MEDIA_OBJECTLIST = "objectList";
+	/** xml element declaration */
 	public static final String ELEMENT_MEDIA_TYPE = "mediaType";
 	/** xml element declaration */
 	public static final String ELEMENT_PROFILE = "profile";
@@ -62,14 +70,6 @@ public final class Definitions {
 	public static final String ELEMENT_USER_ID = "userId";
 	/** xml element declaration */
 	public static final String ELEMENT_VALUE = "value";
-	/** xml element declaration */
-	public static final String ELEMENT_VISUAL_OBJECT = "object";
-	/** xml element declaration */
-	public static final String ELEMENT_VISUAL_OBJECT_ID = "visualObjectId";
-	/** xml element declaration */
-	public static final String ELEMENT_VISUAL_OBJECT_TYPE = "objectType";
-	/** xml element declaration */
-	public static final String ELEMENT_VISUAL_OBJECTLIST = "objectList";
 	
 	/* attributes */
 	/** xml response attribute declaration */

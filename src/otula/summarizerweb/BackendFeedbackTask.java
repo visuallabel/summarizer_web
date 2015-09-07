@@ -25,7 +25,7 @@ import org.w3c.dom.NodeList;
 
 import analyzer.database.DataFactory;
 import otula.summarizerweb.Media.MediaType;
-import otula.summarizerweb.VisualObject.VisualObjectType;
+import otula.summarizerweb.MediaObject.VisualObjectType;
 import otula.utils.XMLFormatter;
 
 /**
@@ -47,7 +47,7 @@ public class BackendFeedbackTask extends AbstractTask {
 	@Override
 	public void run() {
 		for(Media p : _media){
-			List<VisualObject> voids = p.getVisualObjects();
+			List<MediaObject> voids = p.getVisualObjects();
 			if(voids == null || voids.isEmpty()){
 				LOGGER.debug("Ignored media with no visual objects.");
 				continue;
@@ -57,7 +57,7 @@ public class BackendFeedbackTask extends AbstractTask {
 				LOGGER.warn("Ignored media with invalid or missing guid.");
 				continue;
 			}
-			for(VisualObject vo : voids){
+			for(MediaObject vo : voids){
 				if(!VisualObjectType.KEYWORD.equals(vo.getType())){
 					LOGGER.debug("Ignored visual object type of invalid type.");
 					continue;

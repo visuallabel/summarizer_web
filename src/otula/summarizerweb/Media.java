@@ -39,9 +39,9 @@ public class Media {
 	private String _guid = null;
 	@XmlElement(name = Definitions.ELEMENT_MEDIA_TYPE)
 	private MediaType _mediaType = null;
-	@XmlElementWrapper(name = Definitions.ELEMENT_VISUAL_OBJECTLIST)
-	@XmlElement(name = Definitions.ELEMENT_VISUAL_OBJECT)
-	private List<VisualObject> _visualObjects = null;
+	@XmlElementWrapper(name = Definitions.ELEMENT_MEDIA_OBJECTLIST)
+	@XmlElement(name = Definitions.ELEMENT_MEDIA_OBJECT)
+	private List<MediaObject> _visualObjects = null;
 	
 	/**
 	 * Media type declaration.
@@ -88,14 +88,14 @@ public class Media {
 	/**
 	 * @return the visualObjects
 	 */
-	public List<VisualObject> getVisualObjects() {
+	public List<MediaObject> getVisualObjects() {
 		return _visualObjects;
 	}
 	
 	/**
 	 * @param visualObjects the visualObjects to set
 	 */
-	public void setVisualObjects(List<VisualObject> visualObjects) {
+	public void setVisualObjects(List<MediaObject> visualObjects) {
 		_visualObjects = visualObjects;
 	}
 	
@@ -103,7 +103,7 @@ public class Media {
 	 * 
 	 * @param visualObject
 	 */
-	public void addVisualObject(VisualObject visualObject){
+	public void addVisualObject(MediaObject visualObject){
 		if(_visualObjects == null){
 			_visualObjects = new ArrayList<>();
 		}
@@ -121,7 +121,7 @@ public class Media {
 		if(StringUtils.isBlank(_guid)){
 			return false;
 		}else if(_visualObjects != null && !_visualObjects.isEmpty()){
-			return VisualObject.isValid(_visualObjects);
+			return MediaObject.isValid(_visualObjects);
 		}else{
 			return true;
 		}

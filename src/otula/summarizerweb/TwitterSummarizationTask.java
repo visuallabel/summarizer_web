@@ -66,7 +66,7 @@ public class TwitterSummarizationTask extends FacebookSummarizationTask {
 	
 	@Override
 	protected AnalysisResults analyze(String inputPath){
-		List<VisualObject> tags = new ArrayList<>();
+		List<MediaObject> tags = new ArrayList<>();
 		List<Media> photos = new ArrayList<>();
 		TextAnalyzer ta = new TextAnalyzer();
 		String configurationFile = ServiceInitializer.getServiceInfo().getTwitterConfigurationFilePath();
@@ -76,7 +76,7 @@ public class TwitterSummarizationTask extends FacebookSummarizationTask {
 		List<Centroid> centroids = out.getSingleOutput();
 		LOGGER.debug("Centroid count for task id "+getTaskId()+": "+centroids.size());
 		for(Centroid c : centroids){
-			VisualObject vo = new VisualObject(getBackendId(), c.getTfidf(), c.getUniqueID(), getUserId(), c.getTag());
+			MediaObject vo = new MediaObject(getBackendId(), c.getTfidf(), c.getUniqueID(), getUserId(), c.getTag());
 			String photoGUID = c.getPhotoUID();
 			if(StringUtils.isBlank(photoGUID)){
 				tags.add(vo);
