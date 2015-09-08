@@ -177,7 +177,13 @@ public class FacebookSummarizationTask extends AbstractTask{
 		List<Centroid> centroids = out.getSingleOutput();
 		LOGGER.debug("Centroid count for task id "+getTaskId()+": "+centroids.size());
 		for(Centroid c : centroids){
-			MediaObject vo = new MediaObject(_backendId, c.getTfidf(), c.getUniqueID(), _userId, c.getTag());
+			String value = c.getTag();
+			MediaObject vo = MediaObject.getMediaObject(_backendId, c.getTfidf(), c.getUniqueID(), _userId, value);
+			if(vo == null){
+				LOGGER.debug("Ignored invalid media object.");
+				continue;
+			}
+			
 			String photoGUID = c.getPhotoUID();
 			if(StringUtils.isBlank(photoGUID)){
 				tags.add(vo);
@@ -236,7 +242,6 @@ public class FacebookSummarizationTask extends AbstractTask{
 		task.setStatus(status);
 
 		HttpPost post = new HttpPost(uri);
-		LOGGER.debug((new XMLFormatter()).toString(task));//TODO remove
 		post.setEntity(new StringEntity((new XMLFormatter()).toString(task), Definitions.CHARSET_UTF8));
 		post.setHeader("Content-Type", "text/xml; charset=utf-8");
 		

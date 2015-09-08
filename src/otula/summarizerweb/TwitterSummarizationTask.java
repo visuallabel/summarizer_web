@@ -76,7 +76,12 @@ public class TwitterSummarizationTask extends FacebookSummarizationTask {
 		List<Centroid> centroids = out.getSingleOutput();
 		LOGGER.debug("Centroid count for task id "+getTaskId()+": "+centroids.size());
 		for(Centroid c : centroids){
-			MediaObject vo = new MediaObject(getBackendId(), c.getTfidf(), c.getUniqueID(), getUserId(), c.getTag());
+			MediaObject vo = MediaObject.getMediaObject(getBackendId(), c.getTfidf(), c.getUniqueID(), getUserId(), c.getTag());
+			if(vo == null){
+				LOGGER.debug("Ignored invalid media object.");
+				continue;
+			}
+			
 			String photoGUID = c.getPhotoUID();
 			if(StringUtils.isBlank(photoGUID)){
 				tags.add(vo);

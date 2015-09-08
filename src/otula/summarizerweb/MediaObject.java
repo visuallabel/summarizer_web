@@ -92,13 +92,21 @@ public class MediaObject {
 	 * @param objectId
 	 * @param userId
 	 * @param value
+	 * @return new media object or null on failure
 	 */
-	public MediaObject(String backendId, Double confidence, String objectId, String userId, String value){
-		_backendId = backendId;
-		_confidence = confidence;
-		_objectId = objectId;
-		_userId = userId;
-		_value = value;
+	public static MediaObject getMediaObject(String backendId, Double confidence, String objectId, String userId, String value){
+		if(StringUtils.isBlank(backendId) || StringUtils.isBlank(objectId) || StringUtils.isBlank(value)){
+			LOGGER.warn("Invalid details for media object.");
+			return null;
+		}
+		
+		MediaObject mo = new MediaObject();
+		mo._backendId = backendId;
+		mo._confidence = confidence;
+		mo._objectId = objectId;
+		mo._userId = userId;
+		mo._value = value;
+		return mo;
 	}
 
 	/**
