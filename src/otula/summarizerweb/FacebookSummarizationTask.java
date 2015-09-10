@@ -49,6 +49,7 @@ import analyzer.segmentation.Centroid;
  *
  */
 public class FacebookSummarizationTask extends AbstractTask{
+	private static final XMLFormatter FORMATTER = new XMLFormatter();
 	private static final Logger LOGGER = Logger.getLogger(FacebookSummarizationTask.class);
 	private String _backendId = null;
 	private String _userId = null;
@@ -225,24 +226,27 @@ public class FacebookSummarizationTask extends AbstractTask{
 	 * @param status
 	 */
 	private void postResults(AnalysisResults results, TaskStatus status){
-		int photoCount = results.countPhotos();
-		int tagCount = results.countObjects();
-		if(photoCount < 1 && tagCount < 1){
-			LOGGER.debug("Ignoring empty tagList, will not send results.");
-			return;
-		}
-
-		String uri = getCallbackURI();
 		String taskId = getTaskId();
-		LOGGER.debug("Sending tags to "+uri+", tagCount: "+tagCount+", photoCount: "+photoCount+", task id: "+taskId);
+		TaskType taskType = getTaskType();
+		TaskResults task = new TaskResults(taskId, taskType, _backendId);
 		
-		TaskResults task = new TaskResults(taskId, getTaskType(), _backendId);
-		task.setTags(results.getObjects());
-		task.setMedia(results.getPhotos());
+		int tagCount = results.countObjects();
+		if(tagCount > 0){
+			task.setTags(results.getObjects());
+		}
+		
+		int photoCount = results.countPhotos();
+		if(photoCount > 0){
+			task.setMedia(results.getPhotos());
+		}
+		
 		task.setStatus(status);
+		
+		String uri = getCallbackURI();
+		LOGGER.debug("Sending tags to "+uri+", tagCount: "+tagCount+", photoCount: "+photoCount+", task id: "+taskId+", task type: "+taskType.name());
 
 		HttpPost post = new HttpPost(uri);
-		post.setEntity(new StringEntity((new XMLFormatter()).toString(task), Definitions.CHARSET_UTF8));
+		post.setEntity(new StringEntity(FORMATTER.toString(task), Definitions.CHARSET_UTF8));
 		post.setHeader("Content-Type", "text/xml; charset=utf-8");
 		
 		try(CloseableHttpClient client = HttpClients.createDefault()) {	// post results to front-end
